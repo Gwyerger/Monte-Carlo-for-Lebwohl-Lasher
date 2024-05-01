@@ -1,0 +1,91 @@
+-----------Mini Docs---MCLL 1.0 is Current!--------
+-------------By Gabriel Yerger @ Brown U-----------
+
+-- Current Warnings --
+
+3D LL system has not been verified in its correctness in predicting a phase transition. 
+This is ongoing in the project.
+
+-- Current Features --
+
+Classes:
+    Mesh 
+        Nx::Int
+        Ny::Int
+        dx::Float64
+        dy::Float64
+        N::Int
+        MeshGridCoords::Array
+
+    LebwohlLasher2D
+        Nx::Int
+        Ny::Int
+        T::Float64
+        ϵ::Float64
+        accepted_moves::Int
+        state::Array
+
+    LebwohlLasher3D
+        Nx::Int
+        Ny::Int
+        T::Float64
+        ϵ::Float64
+        accepted_moves::Int
+        state::Array
+
+Functions:
+    wrap_index(i::Int, l::Int)::Int
+    wrap_angle(θ)
+    RandAnglePhi()
+    RandAngleTheta()
+    LebwohlLasher2D(N::Int, T::Float64, ϵ::Float64, IC::String="Uniform")
+    LebwohlLasher3D(N::Int, T::Float64, ϵ::Float64, IC::String="Uniform")
+    IC: "Uniform"
+        "Random"
+    PairwiseEnergy3D(state1::Array, state2::Array, ϵ::Float64)
+    PairwiseEnergy2D_BendPenalty(state1::Float64, state2::Float64, ϵ::Float64; β::Float64=π/4) // A Bend modulated energy: prefers spontaneous bend
+    PairwiseEnergy2D(state1::Float64, state2::Float64, ϵ::Float64) 
+    LocalEnergy2D(locale::Array, ϵ::Float64, periodic::Bool, VEdge, HEdge, InteractionPotential = PairwiseEnergy2D)
+    LocalEnergy3D(locale::Array, ϵ::Float64)
+    MCStepper2D!(sys::LebwohlLasher2D, iterations::Int, maxStepSize::Float64, BC::str, fixed::BitMatrix = BitMatrix(zeros(Bool, sys.Nx, sys.Ny)), InteractionPotential = PairwiseEnergy2D)
+    BC: "Periodic"
+        "Free"
+        "Fixed"
+    MCStepper3D!(sys::LebwohlLasher3D, iterations::Int)
+    FreeEnergy2D(sys::LebwohlLasher2D, InteractionPotential = PairwiseEnergy2D)
+    EnergyDensity2D(sys::LebwohlLasher2D, BC::String; InteractionPotential = PairwiseEnergy2D)
+    FreeEnergy3D(sys::LebwohlLasher3D)
+    Qtensor2D(sys::LebwohlLasher2D)
+    QtensorPoints2D(sys::LebwohlLasher2D)
+    Qtensor3D(sys::LebwohlLasher3D)
+    QtensorPoints3D(sys::LebwohlLasher3D)
+    Director2D(sys::LebwohlLasher2D)
+    Director3D(sys::LebwohlLasher3D) 
+    VectorField2D(sys::LebwohlLasher2D)
+    DirectorPlot2D(sys::LebwohlLasher2D; arrows::Bool = false, directional::Bool = false, biaxial::Bool=false)
+    DirectorPlot2D!(sys::LebwohlLasher2D; arrows::Bool = false, directional::Bool = false, biaxial::Bool=false)
+    ScalarOrderParameter2D(sys::LebwohlLasher2D)
+    ScalarOrderParameter3D(sys::LebwohlLasher3D)
+    FindDefects2D(sys::LebwohlLasher2D) 
+    DivergenceQ2D(sys::LebwohlLasher2D)
+    GradientQ2D(sys::LebwohlLasher2D)
+    GetDefectTensor2D(sys::LebwohlLasher2D, pos, charge)
+    PlusHalfDefect(pos, orientation) 
+    MinusHalfDefect(pos, orientation)
+    InitializeDefect2D!(sys::LebwohlLasher2D, pos, charge, orientation)
+    DefectForce2D(sys::LebwohlLasher2D, Defect::BitMatrix, fixed::BitMatrix = BitMatrix(zeros(Bool, sys.Nx, sys.Ny)), InteractionPotential = PairwiseEnergy2D)
+    DefectTorque(sys::LebwohlLasher2D, Defect::BitMatrix, fix::BitMatrix = BitMatrix(zeros(Bool, sys.Nx, sys.Ny)), InteractionPotential = PairwiseEnergy2D) // running but needs more thought
+
+Next Steps:
+    > Add functions:
+        FindDefects3D(sys::LebwohlLasher3D)
+        GetDefectTensor3D(pos, charge)
+    > Make AI write my documentation
+    > Make AI comment my code
+    > Make seperate files for seperate "experiments"
+    > Obviously 3D is underdeveloped, but there is also the question of different mesh types, namely a triangular mesh. Is this too complex computationally?
+    > Implementing Splay and Twist modulation using Q-tensor and Q-tensor gradient quantities
+    > Upload to Github
+    > Make interpolation options for optical tweezer and torque functions
+
+        
